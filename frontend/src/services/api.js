@@ -9,7 +9,7 @@ const api = axios.create({
     }
 });
 
-const store = (token,user) =>{
+const storeData = (token,user) =>{
   sessionStorage.setItem("token",token);
   sessionStorage.setItem("user",JSON.stringify(user));
 }
@@ -19,4 +19,4 @@ const removeStore = () =>{
   sessionStorage.removeItem("user");
 }
 
-export {api, store, removeStore};
+export {api, storeData, removeStore};
