@@ -3,9 +3,13 @@ import { Link } from 'react-router-dom'
 
 const LoginPage = () => {
   return (
-    <div>LoginPage
+    <div>
+      <h1>Login</h1>
       <div>
         <Link to={"/register"}>Register</Link>
+      </div>
+      <div>
+    
       </div>
     </div>
   )
