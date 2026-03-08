@@ -14,7 +14,7 @@ const Register = () => {
     e.preventDefault();
     try {
       await api.post("/user/register", user);
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.log(error.message);
     }
