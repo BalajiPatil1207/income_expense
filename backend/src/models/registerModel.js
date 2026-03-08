@@ -49,6 +49,9 @@ const REG_MODEL = sequelize.define(
           msg: "Provide valid email"
         }
       },
+      set(value){
+        this.setDataValue("email", value.toLowerCase())
+      },
       unique: {
         msg: "Email is aready exists"
       }

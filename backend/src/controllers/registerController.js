@@ -1,6 +1,7 @@
 const errorHandler = require("../helpers/errorHandler");
 const REG_MODEL = require("../models/registerModel");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken")
 
 const register = async (req, res) => {
   try {
@@ -26,7 +27,7 @@ const login = async (req, res) => {
   try {
     const data = req.body;
     const findUser = await REG_MODEL.findOne({
-      where: { email }
+      where: { email:data.email }
     });
     if (!findUser) {
       return res.status(401).json({
@@ -39,6 +40,8 @@ const login = async (req, res) => {
         message: "Invalid credentials"
       });
     }
+    // findUser.password = undefined;
+
     const payload = {
       id: findUser.user_id,
       email: findUser.email
@@ -49,9 +52,10 @@ const login = async (req, res) => {
     });
 
     return res.status(200).json({
+      success:true,
       message: "Login Successfully",
       token,
-      user: findUser
+      data: findUser
     });
   } catch (error) {
     const err = errorHandler(error);
@@ -92,7 +96,7 @@ const find = async (req, res) => {
   try {
     const user = await REG_MODEL.findByPk(req.params.id);
     if (!user) {
-      return res.status(401).json({
+      return res.status(404).json({
         success: false,
         message: "User not found"
       });
@@ -111,7 +115,7 @@ const find = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const user = await REG_MODEL.findByPk(req.data.id);
+    const user = await REG_MODEL.findByPk(req.params.id);
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -132,7 +136,7 @@ const update = async (req, res) => {
 
 const Delete = async (req, res) => {
   try {
-    const user = await REG_MODEL.findByPk(req.data.id);
+    const user = await REG_MODEL.findByPk(req.params.id);
     if (!user) {
       return res.status(401).json({
         success: false,
