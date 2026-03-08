@@ -5,6 +5,7 @@ const cors = require("cors");
 
 require("./src/config/db")
 app.use(cors());
+app.use(express.json());
 
 const registerRoute = require("./src/routes/registerRoute");
 app.use("/api/user",registerRoute);

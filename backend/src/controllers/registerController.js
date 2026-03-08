@@ -16,6 +16,7 @@ const register = async (req, res) => {
       data:user
     });
   } catch (error) {
+    console.error("DETAILED BACKEND ERROR:", error);
     const err = errorHandler(error);
     return res.status(err.status || 500).json(err);
   };
