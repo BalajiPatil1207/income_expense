@@ -4,7 +4,7 @@ const sequelize = require("../config/db");
 const REG_MODEL = sequelize.define(
   "REG_MODEL",
   {
-    id: {
+    user_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,

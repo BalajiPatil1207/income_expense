@@ -5,15 +5,15 @@ const bcrypt = require("bcrypt")
 const register = async (req, res) => {
   try {
     const data = req.body;
-    const hashPassword = await bcrypt.hash(data.password,10);
+    const hashPassword = await bcrypt.hash(data.password, 10);
     const user = await REG_MODEL.create({
       ...data,
-      password:hashPassword
+      password: hashPassword
     });
     return res.status(201).json({
-      success:true,
-      message:"User Registered Successfully",
-      data:user
+      success: true,
+      message: "User Registered Successfully",
+      data: user
     });
   } catch (error) {
     console.error("DETAILED BACKEND ERROR:", error);
@@ -24,9 +24,37 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    const data = req.body;
+    const findUser = await REG_MODEL.findOne({
+      where: { email }
+    });
+    if (!findUser) {
+      return res.status(401).json({
+        message: "Invalid credentials"
+      });
+    }
+    const matchPassword = await bcrypt.compare(data.password, findUser.password);
+    if (!matchPassword) {
+      return res.status(401).json({
+        message: "Invalid credentials"
+      });
+    }
+    const payload = {
+      id: findUser.user_id,
+      email: findUser.email
+    };
 
+    const token = jwt.sign(payload, "balajipatil@patilbalaji", {
+      expiresIn: "2h"
+    });
+
+    return res.status(200).json({
+      message: "Login Successfully",
+      token,
+      user: findUser
+    });
   } catch (error) {
-   const err = errorHandler(error);
+    const err = errorHandler(error);
     return res.status(err.status || 500).json(err);
 
   }

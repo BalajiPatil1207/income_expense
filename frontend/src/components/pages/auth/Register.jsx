@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { api, storeData } from "../../../services/api";
+import { api } from "../../../services/api";
 
 const Register = () => {
   const [user, setUser] = useState({ status: "Admin" });
@@ -13,13 +13,8 @@ const Register = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/user/register", user);
-      if (res.data && res.data.success) {
-        const token = res.data.token || "temp_token";
-        const userData = res.data.data;
-        storeData(token, userData);
-        navigate("/login");
-      }
+      await api.post("/user/register", user);
+      navigate("/login");
     } catch (error) {
       console.log(error.message);
     }
