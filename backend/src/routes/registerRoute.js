@@ -6,7 +6,8 @@ const auth = require('../middleware/registerMiddle');
 router.post("/register", registerControl.register);
 router.post("/login", registerControl.login);
 
-router.get("/index", auth, registerControl.index);
+router.use(auth)
+router.get("/index", registerControl.index);
 router.post("/store", registerControl.store);
 router.get("/find/:id", registerControl.find);
 router.put("/update/:id", registerControl.update);

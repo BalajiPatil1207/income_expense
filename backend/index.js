@@ -7,8 +7,12 @@ require("./src/config/db")
 app.use(cors());
 app.use(express.json());
 
+// Routes
 const registerRoute = require("./src/routes/registerRoute");
 app.use("/api/user",registerRoute);
+
+const incomeRoute = require("./src/routes/incomeRoute");
+app.use("/api/income",incomeRoute);
 
 const port = Number(process.env.PORT);
 
