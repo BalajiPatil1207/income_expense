@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../../services/api";
 
 const Register = () => {
-  const [user, setUser] = useState({ status: "Admin" });
+  const [user, setUser] = useState({ status: "User" });
   const navigate = useNavigate();
 
   const inputHandler = (e) => {
