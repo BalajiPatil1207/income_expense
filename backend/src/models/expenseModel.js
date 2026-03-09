@@ -4,7 +4,7 @@ const sequelize = require("../config/db");
 const EXPENSE = sequelize.define(
   "EXPENSE",
   {
-    income_id:{
+    expense_id:{
       type:DataTypes.INTEGER,
       primaryKey:true,
       autoIncrement:true,

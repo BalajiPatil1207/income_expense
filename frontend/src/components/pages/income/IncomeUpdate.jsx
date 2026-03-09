@@ -66,7 +66,7 @@ const IncomeUpdate = () => {
             </h2>
             <p className="text-slate-400 text-sm mt-1">Modify your transaction details below</p>
           </div>
-          <Link to="/income" className="p-3 bg-white/10 hover:bg-white/20 rounded-2xl transition-all">
+          <Link to="/dash/income" className="p-3 bg-white/10 hover:bg-white/20 rounded-2xl transition-all">
             <ArrowLeft size={20} />
           </Link>
         </div>

@@ -82,7 +82,7 @@ const Home = () => {
 
         {/* Total Expense Card */}
         <div>
-          <Link>
+          <Link to={"/dash/expense"}>
             <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex items-center gap-5 hover:shadow-md transition-shadow">
               <div className="bg-red-100 p-4 rounded-2xl text-red-600">
                 <ArrowDownLeft size={28} />

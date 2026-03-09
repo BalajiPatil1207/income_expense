@@ -13,6 +13,9 @@ app.use("/api/user",registerRoute);
 const incomeRoute = require("./src/routes/incomeRoute");
 app.use("/api/income",incomeRoute);
 
+const expenseRoute = require("./src/routes/expenseRoute");
+app.use("/api/expense",expenseRoute);
+
 const port = Number(process.env.PORT);
 
 app.listen(port,()=>{

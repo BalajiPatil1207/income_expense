@@ -10,6 +10,9 @@ import IncomeCreate from "../pages/income/IncomeCreate";
 import IncomeDetails from "../pages/income/IncomeDetails";
 import IncomeUpdate from "../pages/income/IncomeUpdate";
 import IncomeIndex from "../pages/income/IncomeIndex";
+import ExpenseIndex from "../pages/expense/ExpenseIndex";
+import ExpenseCreate from "../pages/expense/ExpenseCreate";
+import ExpenseUpdate from "../pages/expense/ExpenseUpdate";
 
 const DefaultRoute = () => {
   const navigate = useNavigate();
@@ -38,8 +41,10 @@ const DefaultRoute = () => {
         <Route path="income/create" element={<IncomeCreate />} />
         <Route path="income/details" element={<IncomeDetails />} />
         <Route path="income/edit/:id" element={<IncomeUpdate />} />
-        <Route path="expense/create" element={<Home />} />
 
+        <Route path="expense" element={<ExpenseIndex/>}/>
+        <Route path="expense/create" element={<ExpenseCreate/>}/>
+        <Route path="expense/edit/:id" element={<ExpenseUpdate/>}/>
       </Route>
 
       <Route path="*" element={<Navigate to={token ? "/private" : "/login"} />} />
