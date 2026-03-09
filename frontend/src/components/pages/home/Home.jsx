@@ -18,10 +18,10 @@ const Home = () => {
           <p className="text-gray-500 font-medium">Manage your money and see where it goes.</p>
         </div>
         <div className="flex gap-3">
-           <Link to="/private/income" className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl transition-all shadow-md shadow-green-100 font-semibold active:scale-95">
+           <Link to="/dash/income/create" className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl transition-all shadow-md shadow-green-100 font-semibold active:scale-95">
              <PlusCircle size={20} /> Add Income
            </Link>
-           <Link to="/private/expense" className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl transition-all shadow-md shadow-red-100 font-semibold active:scale-95">
+           <Link to="/dash/expense/create" className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl transition-all shadow-md shadow-red-100 font-semibold active:scale-95">
              <PlusCircle size={20} /> Add Expense
            </Link>
         </div>

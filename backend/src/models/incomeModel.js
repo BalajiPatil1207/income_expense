@@ -12,7 +12,7 @@ const INCOME = sequelize.define(
     },
 
     user_ID:{
-      type:DataTypes.INTEGER,
+      type:DataTypes.STRING,
       allowNull:false,
       references:{
         model:REG_MODEL,

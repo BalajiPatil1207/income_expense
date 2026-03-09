@@ -6,6 +6,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import PublicLayout from "../layout/PublicLayout";
 import ProtectedLayout from "../layout/ProtectedLayout";
 import Home from "../pages/home/Home";
+import IncomeCreate from "../pages/income/IncomeCreate";
 
 const DefaultRoute = () => {
   const navigate = useNavigate();
@@ -31,6 +32,9 @@ const DefaultRoute = () => {
       <Route path="dash" element={<ProtectedLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="home" element={<Home />} />
+        <Route path="income/create" element={<IncomeCreate />} />
+        <Route path="expense/create" element={<Home />} />
+
       </Route>
 
       <Route path="*" element={<Navigate to={token ? "/private" : "/login"} />} />

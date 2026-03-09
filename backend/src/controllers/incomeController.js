@@ -4,7 +4,7 @@ const INCOME = require("../models/incomeModel");
 const index = async (req, res) => {
   try {
     const incomes = await INCOME.findAll({
-      where: {income_Id:req.user.user_id}
+      where: {user_ID:req.user.user_id}
     });
     return res.status(200).json({
       success: true,
@@ -20,7 +20,7 @@ const store = async (req, res) => {
   try {
     const income = await INCOME.create({
       ...req.body,
-      user_Id:req.user.user_Id
+      user_ID:req.user.user_id || req.user.id
     });
     return res.status(201).json({
       success:true,

@@ -43,6 +43,7 @@ const Register = () => {
                   className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:bg-white focus:outline-none transition-all placeholder:text-gray-300"
                   type="text"
                   name="first_name"
+                  required
                   placeholder="John"
                   value={user.first_name || ""}
                   onChange={inputHandler}
@@ -56,6 +57,7 @@ const Register = () => {
                 className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:bg-white focus:outline-none transition-all placeholder:text-gray-300"
                 type="text"
                 name="last_name"
+                required
                 placeholder="Doe"
                 value={user.last_name || ""}
                 onChange={inputHandler}
@@ -71,6 +73,7 @@ const Register = () => {
                 className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:bg-white focus:outline-none transition-all placeholder:text-gray-300"
                 type="email"
                 name="email"
+                required
                 placeholder="john@example.com"
                 value={user.email || ""}
                 onChange={inputHandler}
@@ -87,6 +90,7 @@ const Register = () => {
                 type="password"
                 name="password"
                 placeholder="••••••••"
+                required
                 value={user.password || ""}
                 onChange={inputHandler}
               />
