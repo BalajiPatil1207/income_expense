@@ -47,7 +47,7 @@ const EXPENSE = sequelize.define(
           msg:"Date is required"
         },
         isDate:{
-
+          msg:"Please enter valid date"
         }
       }
     },
