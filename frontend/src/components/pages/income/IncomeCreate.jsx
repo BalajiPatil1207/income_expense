@@ -13,8 +13,7 @@ import {
 const IncomeCreate = () => {
   const navigate = useNavigate();
 
-  const [income, setIncome] = useState({
-  });
+  const [income, setIncome] = useState({});
 
   const inputHandler = (e) => {
     setIncome({

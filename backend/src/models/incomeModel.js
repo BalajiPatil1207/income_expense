@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
-const REG_MODEL = require("./registerModel");
 
 const INCOME = sequelize.define(
   "INCOME",
