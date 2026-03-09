@@ -13,11 +13,7 @@ import {
 const IncomeCreate = () => {
   const navigate = useNavigate();
 
-  // User ID automatically session madhun ghene
-  const savedUser = JSON.parse(sessionStorage.getItem("user"));
-
   const [income, setIncome] = useState({
-    user_ID: savedUser?.user_id || "",
   });
 
   const inputHandler = (e) => {
@@ -29,10 +25,6 @@ const IncomeCreate = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (!income.user_ID) {
-      alert("User ID is missing. Please login again.");
-      return;
-    }
     try {
       const res = await api.post("/income/store", income);
       if(res.data.success) {
@@ -50,7 +42,7 @@ const IncomeCreate = () => {
         <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-8 text-white">
           <div className="flex justify-between items-center">
             <Link
-              to="/private"
+              to="/dash"
               className="bg-white/20 hover:bg-white/30 p-2 rounded-full transition-all"
             >
               <ArrowLeft size={20} />
@@ -153,9 +145,6 @@ const IncomeCreate = () => {
             </div>
           </div>
 
-          {/* Hidden User ID Field - Already handled in state */}
-          <input type="hidden" name="user_ID" value={income.user_ID} />
-
           {/* Action Buttons */}
           <div className="pt-4 space-y-3">
             <button
@@ -170,7 +159,7 @@ const IncomeCreate = () => {
             </button>
 
             <Link
-              to="/private"
+              to="/dash"
               className="block w-full text-center text-gray-400 hover:text-gray-600 font-bold text-sm transition-colors py-2"
             >
               Cancel & Go Back

@@ -5,21 +5,15 @@ const REG_MODEL = require("./registerModel");
 const INCOME = sequelize.define(
   "INCOME",
   {
-    income_Id:{
+    income_id:{
       type:DataTypes.INTEGER,
       primaryKey:true,
       autoIncrement:true,
     },
-
-    user_ID:{
-      type:DataTypes.STRING,
+    pk_user_id:{
+      type:DataTypes.INTEGER,
       allowNull:false,
-      references:{
-        model:REG_MODEL,
-        key:"user_id"
-      }
     },
-
     source:{
       type:DataTypes.STRING,
       allowNull:false,
@@ -69,13 +63,13 @@ const INCOME = sequelize.define(
   }
 );
 
-REG_MODEL.hasMany(INCOME,{
-  foreignKey:"user_ID",
-  onDelete:"CASCADE"
-});
+// REG_MODEL.hasMany(INCOME,{
+//   foreignKey:"user_ID",
+//   onDelete:"CASCADE"
+// });
 
-INCOME.belongsTo(REG_MODEL,{
-  foreignKey:"user_ID"
-});
+// INCOME.belongsTo(REG_MODEL,{
+//   foreignKey:"user_ID"
+// });
 
 module.exports = INCOME;

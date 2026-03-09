@@ -7,6 +7,9 @@ import PublicLayout from "../layout/PublicLayout";
 import ProtectedLayout from "../layout/ProtectedLayout";
 import Home from "../pages/home/Home";
 import IncomeCreate from "../pages/income/IncomeCreate";
+import IncomeDetails from "../pages/income/IncomeDetails";
+import IncomeUpdate from "../pages/income/IncomeUpdate";
+import IncomeIndex from "../pages/income/IncomeIndex";
 
 const DefaultRoute = () => {
   const navigate = useNavigate();
@@ -31,8 +34,10 @@ const DefaultRoute = () => {
       </Route>
       <Route path="dash" element={<ProtectedLayout />}>
         <Route index element={<Dashboard />} />
-        <Route path="home" element={<Home />} />
+        <Route path="income" element={<IncomeIndex />} />
         <Route path="income/create" element={<IncomeCreate />} />
+        <Route path="income/details" element={<IncomeDetails />} />
+        <Route path="income/edit/:id" element={<IncomeUpdate />} />
         <Route path="expense/create" element={<Home />} />
 
       </Route>
