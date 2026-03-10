@@ -8,7 +8,8 @@ import {
   Calendar, 
   Clock, 
   SendHorizontal,
-  WalletMinimal
+  WalletMinimal,
+  Sparkles
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -34,57 +35,61 @@ const ExpenseCreate = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fff1f2] p-4 md:p-10 flex items-center justify-center font-sans">
+    <div className="min-h-screen bg-[#0a0f1e] p-4 md:p-10 flex items-center justify-center font-sans relative overflow-hidden">
+      
+      {/* Background Decorative Glow */}
+      <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px]"></div>
+      <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-indigo-600/10 rounded-full blur-[100px]"></div>
+
       <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="max-w-xl w-full bg-white rounded-[2.5rem] shadow-[0_25px_70px_rgba(225,29,72,0.1)] border border-rose-50 overflow-hidden"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-xl w-full bg-[#161d31]/60 backdrop-blur-3xl rounded-[3rem] border border-slate-800 shadow-2xl overflow-hidden relative z-10"
       >
         {/* Header Section */}
-        <div className="bg-rose-500 p-8 text-white relative overflow-hidden">
-          <div className="relative z-10 flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-black tracking-tighter flex items-center gap-2">
-                <ReceiptIndianRupee size={32} strokeWidth={2.5} />
-                Add Expense
-              </h1>
-              <p className="text-rose-100 font-medium text-sm mt-1">Don't lose track of your spending.</p>
+        <div className="p-8 md:p-10 border-b border-slate-800 flex justify-between items-center bg-[#161d31]/40">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-3">
+              <Sparkles size={14} className="text-emerald-400" />
+              <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">New Entry</span>
             </div>
-            <Link to="/dash" className="p-3 bg-white/20 hover:bg-white/30 rounded-2xl transition-all">
-              <ArrowLeft size={20} />
-            </Link>
+            <h1 className="text-4xl font-black text-white tracking-tighter flex items-center gap-3">
+              Add <span className="text-emerald-400">Expense</span>
+            </h1>
+            <p className="text-slate-500 font-bold text-xs mt-2 uppercase tracking-widest">Keep your budget on track</p>
           </div>
-          {/* Decorative Circles */}
-          <div className="absolute -top-10 -right-10 w-32 h-32 bg-rose-400 rounded-full opacity-50"></div>
+          <Link to="/dash" className="p-4 bg-[#0a0f1e] hover:bg-slate-800 text-slate-400 rounded-3xl border border-slate-800 transition-all group">
+            <ArrowLeft size={22} className="group-hover:-translate-x-1 transition-transform" />
+          </Link>
         </div>
 
         {/* Form Section */}
         <form onSubmit={submitHandler} className="p-8 md:p-10 space-y-6">
           
           {/* Source Input */}
-          <div className="space-y-2">
-            <label className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-[0.2em] ml-1">
-              <Tag size={14} /> Category / Source
+          <div className="space-y-3">
+            <label className="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+              <Tag size={14} className="text-emerald-500" /> Expense Category
             </label>
             <input
               type="text"
               name="source"
               required
-              placeholder="Ex. Rent, Grocery, Internet"
+              placeholder="Ex. Grocery, Rent, Movie"
               value={expense.source || ""}
               onChange={inputHandler}
-              className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-rose-200 focus:bg-white rounded-2xl outline-none font-bold text-slate-700 transition-all placeholder:text-slate-300"
+              className="w-full px-6 py-4 bg-[#0a0f1e]/50 border border-slate-800 focus:border-emerald-500/50 rounded-2xl outline-none font-bold text-white transition-all placeholder:text-slate-700"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Amount Input */}
-            <div className="space-y-2 md:col-span-2">
-              <label className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-[0.2em] ml-1">
-                <WalletMinimal size={14} /> Amount
+            <div className="space-y-3 md:col-span-2">
+              <label className="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                <WalletMinimal size={14} className="text-emerald-500" /> Amount
               </label>
-              <div className="relative">
-                <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-rose-500 text-lg">₹</span>
+              <div className="relative group">
+                <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-emerald-400 text-xl group-focus-within:scale-110 transition-transform">₹</span>
                 <input
                   type="number"
                   name="amount"
@@ -92,15 +97,15 @@ const ExpenseCreate = () => {
                   placeholder="0.00"
                   value={expense.amount || ""}
                   onChange={inputHandler}
-                  className="w-full pl-12 pr-6 py-4 bg-slate-50 border-2 border-transparent focus:border-rose-200 focus:bg-white rounded-2xl outline-none font-black text-slate-700 text-xl transition-all"
+                  className="w-full pl-12 pr-6 py-5 bg-[#0a0f1e]/50 border border-slate-800 focus:border-emerald-500/50 rounded-2xl outline-none font-black text-white text-2xl transition-all"
                 />
               </div>
             </div>
 
             {/* Date Input */}
-            <div className="space-y-2">
-              <label className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-[0.2em] ml-1">
-                <Calendar size={14} /> Date
+            <div className="space-y-3">
+              <label className="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                <Calendar size={14} className="text-emerald-500" /> Date
               </label>
               <input
                 type="date"
@@ -108,14 +113,14 @@ const ExpenseCreate = () => {
                 required
                 value={expense.date || ""}
                 onChange={inputHandler}
-                className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-rose-200 focus:bg-white rounded-2xl outline-none font-bold text-slate-700 transition-all"
+                className="w-full px-6 py-4 bg-[#0a0f1e]/50 border border-slate-800 focus:border-emerald-500/50 rounded-2xl outline-none font-bold text-white transition-all [color-scheme:dark]"
               />
             </div>
 
             {/* Time Input */}
-            <div className="space-y-2">
-              <label className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-[0.2em] ml-1">
-                <Clock size={14} /> Time
+            <div className="space-y-3">
+              <label className="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                <Clock size={14} className="text-emerald-500" /> Time
               </label>
               <input
                 type="time"
@@ -123,25 +128,26 @@ const ExpenseCreate = () => {
                 required
                 value={expense.time || ""}
                 onChange={inputHandler}
-                className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-rose-200 focus:bg-white rounded-2xl outline-none font-bold text-slate-700 transition-all"
+                className="w-full px-6 py-4 bg-[#0a0f1e]/50 border border-slate-800 focus:border-emerald-500/50 rounded-2xl outline-none font-bold text-white transition-all [color-scheme:dark]"
               />
             </div>
           </div>
 
           {/* Submit Button */}
           <motion.button
-            whileHover={{ scale: 1.01 }}
+            whileHover={{ scale: 1.02, backgroundColor: "#34d399" }}
             whileTap={{ scale: 0.98 }}
             type="submit"
-            className="w-full bg-slate-900 hover:bg-rose-600 text-white font-black py-5 rounded-2xl shadow-xl shadow-rose-100 transition-all flex items-center justify-center gap-3 mt-4"
+            className="w-full bg-emerald-500 text-[#0a0f1e] font-black py-5 rounded-[2rem] shadow-lg shadow-emerald-500/10 transition-all flex items-center justify-center gap-3 mt-6 uppercase tracking-widest text-xs"
           >
             <SendHorizontal size={20} />
             Record Expense
           </motion.button>
 
-          <p className="text-center text-slate-400 text-xs font-medium">
-            Review your entries carefully before submitting.
-          </p>
+          <div className="flex items-center justify-center gap-2 text-slate-600">
+             <div className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></div>
+             <p className="text-[10px] font-black uppercase tracking-widest">Secure Financial Entry</p>
+          </div>
         </form>
       </motion.div>
     </div>

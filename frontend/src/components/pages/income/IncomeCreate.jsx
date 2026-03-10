@@ -7,13 +7,16 @@ import {
   Calendar,
   Clock,
   ArrowLeft,
-  PlusCircle,
+  CheckCircle2,
+  Sparkles,
+  Zap
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const IncomeCreate = () => {
   const navigate = useNavigate();
-
   const [income, setIncome] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const inputHandler = (e) => {
     setIncome({
@@ -24,6 +27,7 @@ const IncomeCreate = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await api.post("/income/store", income);
       if(res.data.success) {
@@ -31,141 +35,157 @@ const IncomeCreate = () => {
       }
     } catch (error) {
       console.log("Error details:", error.response?.data || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-      <div className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl shadow-gray-200 overflow-hidden border border-gray-100">
-        {/* Header Section */}
-        <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-8 text-white">
-          <div className="flex justify-between items-center">
-            <Link
-              to="/dash"
-              className="bg-white/20 hover:bg-white/30 p-2 rounded-full transition-all"
-            >
-              <ArrowLeft size={20} />
-            </Link>
-            <h1 className="text-2xl font-black tracking-tight">
-              Add New Income
+    <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center p-4 relative overflow-hidden">
+      
+      {/* 🎭 Background Glows */}
+      <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-emerald-600/10 rounded-full blur-[100px]"></div>
+      <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-indigo-600/10 rounded-full blur-[100px]"></div>
+
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full max-w-xl relative z-10"
+      >
+        <div className="bg-[#161d31]/60 backdrop-blur-2xl rounded-[3rem] border border-slate-800 shadow-2xl overflow-hidden">
+          
+          {/* Header Section */}
+          <div className="p-8 md:p-10 border-b border-slate-800/50 relative">
+            <div className="flex justify-between items-center mb-6">
+              <Link
+                to="/dash"
+                className="bg-slate-800/50 hover:bg-slate-700 text-slate-300 p-3 rounded-2xl transition-all border border-slate-700 active:scale-90"
+              >
+                <ArrowLeft size={20} />
+              </Link>
+              <div className="flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-xl text-[10px] font-black uppercase tracking-widest">
+                <Sparkles size={14} /> New Entry
+              </div>
+            </div>
+            
+            <h1 className="text-4xl font-black text-white tracking-tighter">
+              Add <span className="text-emerald-400">Income</span>
             </h1>
-            <div className="w-9"></div> {/* Balancer */}
+            <p className="text-slate-500 font-medium mt-1">
+              Track your revenue streams with precision.
+            </p>
           </div>
-          <p className="text-green-100 text-sm mt-2 text-center font-medium">
-            Record your earnings and grow your wealth
-          </p>
+
+          {/* Form Section */}
+          <form onSubmit={submitHandler} className="p-8 md:p-10 space-y-8">
+            
+            {/* Amount Field */}
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                Amount (INR)
+              </label>
+              <div className="relative group">
+                <div className="absolute left-5 top-1/2 -translate-y-1/2 text-emerald-500 group-focus-within:scale-110 transition-transform">
+                  <IndianRupee size={24} strokeWidth={3} />
+                </div>
+                <input
+                  type="number"
+                  name="amount"
+                  required
+                  placeholder="0.00"
+                  value={income.amount || ""}
+                  onChange={inputHandler}
+                  className="w-full pl-14 pr-6 py-5 bg-[#0a0f1e]/50 border border-slate-800 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 focus:outline-none transition-all text-2xl font-black text-white placeholder:text-slate-700"
+                />
+              </div>
+            </div>
+
+            {/* Source Field */}
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                Revenue Source
+              </label>
+              <div className="relative group">
+                <div className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-emerald-400 transition-colors">
+                  <Landmark size={22} />
+                </div>
+                <input
+                  type="text"
+                  name="source"
+                  required
+                  placeholder="e.g. Freelance Project"
+                  value={income.source || ""}
+                  onChange={inputHandler}
+                  className="w-full pl-14 pr-6 py-5 bg-[#0a0f1e]/50 border border-slate-800 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 focus:outline-none transition-all font-bold text-white placeholder:text-slate-700"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Date Field */}
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Date</label>
+                <div className="relative">
+                  <Calendar className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                  <input
+                    type="date"
+                    name="date"
+                    required
+                    value={income.date || ""}
+                    onChange={inputHandler}
+                    className="w-full pl-14 pr-4 py-4 bg-[#0a0f1e]/50 border border-slate-800 rounded-2xl focus:border-emerald-500 focus:outline-none transition-all text-white font-bold"
+                  />
+                </div>
+              </div>
+
+              {/* Time Field */}
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Time</label>
+                <div className="relative">
+                  <Clock className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                  <input
+                    type="time"
+                    name="time"
+                    required
+                    value={income.time || ""}
+                    onChange={inputHandler}
+                    className="w-full pl-14 pr-4 py-4 bg-[#0a0f1e]/50 border border-slate-800 rounded-2xl focus:border-emerald-500 focus:outline-none transition-all text-white font-bold"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="pt-6 space-y-4">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                disabled={loading}
+                type="submit"
+                className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-5 rounded-[2rem] shadow-2xl shadow-emerald-500/20 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+              >
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <Zap className="animate-pulse" size={20} /> Processing...
+                  </span>
+                ) : (
+                  <>
+                    <span>Confirm Transaction</span>
+                    <CheckCircle2 size={20} strokeWidth={3} />
+                  </>
+                )}
+              </motion.button>
+
+              <Link
+                to="/dash"
+                className="block w-full text-center text-slate-500 hover:text-slate-300 font-black text-[10px] uppercase tracking-widest transition-colors py-2"
+              >
+                Discard & Return
+              </Link>
+            </div>
+          </form>
         </div>
-
-        {/* Form Section */}
-        <form onSubmit={submitHandler} className="p-8 space-y-6">
-          {/* Amount Field */}
-          <div className="relative">
-            <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2 block">
-              Income Amount
-            </label>
-            <div className="relative group">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-green-600">
-                <IndianRupee size={22} />
-              </div>
-              <input
-                type="number"
-                name="amount"
-                required
-                placeholder="0.00"
-                value={income.amount || ""}
-                onChange={inputHandler}
-                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-green-500/10 focus:border-green-500 focus:bg-white focus:outline-none transition-all text-xl font-bold"
-              />
-            </div>
-          </div>
-
-          {/* Source Field */}
-          <div className="relative">
-            <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2 block">
-              Income Source
-            </label>
-            <div className="relative group">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-green-500 transition-colors">
-                <Landmark size={20} />
-              </div>
-              <input
-                type="text"
-                name="source"
-                required
-                placeholder="Salary, Freelance, Gift..."
-                value={income.source || ""}
-                onChange={inputHandler}
-                className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-green-500/10 focus:border-green-500 focus:bg-white focus:outline-none transition-all font-medium"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            {/* Date Field */}
-            <div className="relative">
-              <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2 block">
-                Date
-              </label>
-              <div className="relative">
-                <Calendar
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-                  size={18}
-                />
-                <input
-                  type="date"
-                  name="date"
-                  required
-                  value={income.date || ""}
-                  onChange={inputHandler}
-                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-green-500 focus:outline-none transition-all text-sm font-bold"
-                />
-              </div>
-            </div>
-
-            {/* Time Field */}
-            <div className="relative">
-              <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2 block">
-                Time
-              </label>
-              <div className="relative">
-                <Clock
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-                  size={18}
-                />
-                <input
-                  type="time"
-                  name="time"
-                  required
-                  value={income.time || ""}
-                  onChange={inputHandler}
-                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-green-500 focus:outline-none transition-all text-sm font-bold"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="pt-4 space-y-3">
-            <button
-              type="submit"
-              className="w-full bg-gray-900 hover:bg-black text-white font-black py-4 rounded-2xl shadow-xl shadow-gray-200 transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-3 group"
-            >
-              <span>Confirm Income</span>
-              <PlusCircle
-                size={20}
-                className="group-hover:rotate-90 transition-transform duration-300"
-              />
-            </button>
-
-            <Link
-              to="/dash"
-              className="block w-full text-center text-gray-400 hover:text-gray-600 font-bold text-sm transition-colors py-2"
-            >
-              Cancel & Go Back
-            </Link>
-          </div>
-        </form>
-      </div>
+      </motion.div>
     </div>
   );
 };
