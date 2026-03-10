@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const incomeControl = require("../controllers/incomeController");
-const auth = require('../middleware/registerMiddle');
 
-router.use(auth)
 router.get("/", incomeControl.index);
 router.post("/store", incomeControl.store);
 router.get("/find/:id", incomeControl.find);

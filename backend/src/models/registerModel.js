@@ -49,7 +49,7 @@ const REG_MODEL = sequelize.define(
           msg: "Provide valid email"
         }
       },
-      set(value){
+      set(value) {
         this.setDataValue("email", value.toLowerCase())
       },
       unique: {
@@ -71,10 +71,15 @@ const REG_MODEL = sequelize.define(
       }
     },
 
-    status:{
-      type:DataTypes.ENUM("Admin","User"),
-      allowNull:false
-    }
+    status: {
+      type: DataTypes.ENUM("Admin", "User"),
+      allowNull: false
+    },
+    user_img: {
+      type: DataTypes.BLOB("long"),
+      allowNull: true
+    },
+
   },
   {
     tableName: "user",

@@ -10,11 +10,12 @@ app.use(cors());
 const registerRoute = require("./src/routes/registerRoute");
 app.use("/api/user",registerRoute);
 
+const auth = require('./src/middleware/registerMiddle');
 const incomeRoute = require("./src/routes/incomeRoute");
-app.use("/api/income",incomeRoute);
+app.use("/api/income",auth ,incomeRoute);
 
 const expenseRoute = require("./src/routes/expenseRoute");
-app.use("/api/expense",expenseRoute);
+app.use("/api/expense", auth,expenseRoute);
 
 const port = Number(process.env.PORT);
 

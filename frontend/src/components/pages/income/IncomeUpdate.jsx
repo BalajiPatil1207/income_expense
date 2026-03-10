@@ -1,23 +1,24 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { api } from '../../../services/api';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { 
   ArrowLeft, 
   Save, 
-  Wallet, 
+  Landmark, 
   Calendar, 
   Clock, 
-  Tag, 
-  User 
+  TrendingUp, 
+  User,
+  Sparkles,
+  RotateCcw
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const IncomeUpdate = () => {
   const [income, setIncome] = useState({});
-  const { id } = useParams(); // URL madhun ID ghenya sathi
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  // Junya values form madhe dakhvanya sathi (Prefill)
   const getOldData = async () => {
     try {
       const res = await api.get(`/income/find/${id}`);
@@ -49,140 +50,125 @@ const IncomeUpdate = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] p-6 md:p-12 flex items-center justify-center font-sans">
+    <div className="min-h-screen bg-[#0a0f1e] p-4 md:p-10 flex items-center justify-center font-sans relative overflow-hidden">
+      
+      {/* Background Decorative Glow */}
+      <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px]"></div>
+      <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-indigo-600/10 rounded-full blur-[100px]"></div>
+
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="max-w-2xl w-full bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-slate-100 overflow-hidden"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="max-w-xl w-full bg-[#161d31]/60 backdrop-blur-3xl rounded-[3rem] border border-slate-800 shadow-2xl overflow-hidden relative z-10"
       >
-        {/* Form Header */}
-        <div className="bg-slate-900 p-8 text-white flex justify-between items-center">
+        {/* Header Section */}
+        <div className="p-8 md:p-10 border-b border-slate-800 flex justify-between items-center bg-[#161d31]/40">
           <div>
-            <h2 className="text-2xl font-black tracking-tight flex items-center gap-3">
-              <div className="p-2 bg-emerald-500 rounded-xl text-white">
-                <Wallet size={24} />
-              </div>
-              Update Income
-            </h2>
-            <p className="text-slate-400 text-sm mt-1">Modify your transaction details below</p>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full mb-3">
+              <RotateCcw size={14} className="text-indigo-400" />
+              <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Edit Mode</span>
+            </div>
+            <h1 className="text-4xl font-black text-white tracking-tighter">
+              Update <span className="text-emerald-400">Income</span>
+            </h1>
+            <p className="text-slate-500 font-bold text-xs mt-2 uppercase tracking-widest">Modify transaction #{id?.slice(-5)}</p>
           </div>
-          <Link to="/dash/income" className="p-3 bg-white/10 hover:bg-white/20 rounded-2xl transition-all">
-            <ArrowLeft size={20} />
+          <Link to="/dash/income" className="p-4 bg-[#0a0f1e] hover:bg-slate-800 text-slate-400 rounded-3xl border border-slate-800 transition-all group">
+            <ArrowLeft size={22} className="group-hover:-translate-x-1 transition-transform" />
           </Link>
         </div>
 
-        {/* Form Body */}
+        {/* Form Section */}
         <form onSubmit={submitHandler} className="p-8 md:p-10 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            {/* Source Input */}
-            <div className="md:col-span-2">
-              <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">
-                Source of Income
-              </label>
-              <div className="relative">
-                <Tag className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
-                <input
-                  type="text"
-                  name="source"
-                  required
-                  placeholder="e.g. Freelance Project"
-                  value={income.source || ""}
-                  onChange={inputHandler}
-                  className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-slate-700 transition-all"
-                />
-              </div>
-            </div>
+          
+          {/* Source Input */}
+          <div className="space-y-3">
+            <label className="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+              <Landmark size={14} className="text-emerald-500" /> Income Source
+            </label>
+            <input
+              type="text"
+              name="source"
+              required
+              value={income.source || ""}
+              onChange={inputHandler}
+              className="w-full px-6 py-4 bg-[#0a0f1e]/50 border border-slate-800 focus:border-emerald-500/50 rounded-2xl outline-none font-bold text-white transition-all placeholder:text-slate-700"
+            />
+          </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Amount Input */}
-            <div>
-              <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">
-                Amount (₹)
+            <div className="space-y-3 md:col-span-2">
+              <label className="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                <TrendingUp size={14} className="text-emerald-500" /> Update Amount
               </label>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">₹</span>
+              <div className="relative group">
+                <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-emerald-400 text-xl group-focus-within:scale-110 transition-transform">₹</span>
                 <input
                   type="number"
                   name="amount"
                   required
                   value={income.amount || ""}
                   onChange={inputHandler}
-                  className="w-full pl-10 pr-4 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-slate-700 transition-all"
+                  className="w-full pl-12 pr-6 py-5 bg-[#0a0f1e]/50 border border-slate-800 focus:border-emerald-500/50 rounded-2xl outline-none font-black text-white text-2xl transition-all"
                 />
               </div>
             </div>
 
             {/* Date Input */}
-            <div>
-              <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">
-                Date
+            <div className="space-y-3">
+              <label className="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                <Calendar size={14} className="text-emerald-500" /> Date
               </label>
-              <div className="relative">
-                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
-                <input
-                  type="date"
-                  name="date"
-                  required
-                  value={income.date || ""}
-                  onChange={inputHandler}
-                  className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-slate-700 transition-all"
-                />
-              </div>
+              <input
+                type="date"
+                name="date"
+                required
+                value={income.date || ""}
+                onChange={inputHandler}
+                className="w-full px-6 py-4 bg-[#0a0f1e]/50 border border-slate-800 focus:border-emerald-500/50 rounded-2xl outline-none font-bold text-white transition-all [color-scheme:dark]"
+              />
             </div>
 
             {/* Time Input */}
-            <div>
-              <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">
-                Time
+            <div className="space-y-3">
+              <label className="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
+                <Clock size={14} className="text-emerald-500" /> Time
               </label>
-              <div className="relative">
-                <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
-                <input
-                  type="time"
-                  name="time"
-                  required
-                  value={income.time || ""}
-                  onChange={inputHandler}
-                  className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-slate-700 transition-all"
-                />
-              </div>
+              <input
+                type="time"
+                name="time"
+                required
+                value={income.time || ""}
+                onChange={inputHandler}
+                className="w-full px-6 py-4 bg-[#0a0f1e]/50 border border-slate-800 focus:border-emerald-500/50 rounded-2xl outline-none font-bold text-white transition-all [color-scheme:dark]"
+              />
             </div>
-
-            {/* User ID (Read Only if needed) */}
-            <div>
-              <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">
-                User Reference
-              </label>
-              <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
-                <input
-                  type="text"
-                  name="user_ID"
-                  required
-                  value={income.user_ID || ""}
-                  onChange={inputHandler}
-                  className="w-full pl-12 pr-4 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-slate-700 transition-all"
-                />
-              </div>
-            </div>
-
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col md:flex-row gap-4 pt-6">
-            <button
+          <div className="flex flex-col gap-4 pt-4">
+            <motion.button
+              whileHover={{ scale: 1.02, backgroundColor: "#10b981" }}
+              whileTap={{ scale: 0.98 }}
               type="submit"
-              className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-black py-5 rounded-2xl shadow-xl shadow-emerald-200 transition-all flex items-center justify-center gap-2 active:scale-95"
+              className="w-full bg-emerald-500 text-[#0a0f1e] font-black py-5 rounded-[2rem] shadow-xl shadow-emerald-500/10 transition-all flex items-center justify-center gap-3 uppercase tracking-widest text-xs"
             >
-              <Save size={20} />
+              <Save size={18} strokeWidth={3} />
               Save Changes
-            </button>
-            <Link
+            </motion.button>
+            
+            <Link 
               to="/dash/income"
-              className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-5 rounded-2xl transition-all flex items-center justify-center active:scale-95"
+              className="w-full text-center py-4 text-slate-500 hover:text-white font-black text-[10px] uppercase tracking-[0.3em] transition-colors"
             >
-              Cancel
+              Discard Changes
             </Link>
+          </div>
+
+          <div className="flex items-center justify-center gap-2 text-slate-700">
+             <Sparkles size={12} />
+             <p className="text-[10px] font-black uppercase tracking-widest">AI Powered Ledger Tracking</p>
           </div>
         </form>
       </motion.div>
