@@ -2,6 +2,8 @@ const errorHandler = require("../helpers/errorHandler");
 const REG_MODEL = require("../models/registerModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken")
+const path = require("path");
+const fs = require("fs");
 
 const register = async (req, res) => {
   try {
@@ -27,7 +29,7 @@ const login = async (req, res) => {
   try {
     const data = req.body;
     const findUser = await REG_MODEL.findOne({
-      where: { email:data.email }
+      where: { email: data.email }
     });
     if (!findUser) {
       return res.status(401).json({
@@ -52,7 +54,7 @@ const login = async (req, res) => {
     });
 
     return res.status(200).json({
-      success:true,
+      success: true,
       message: "Login Successfully",
       token,
       data: findUser
@@ -123,8 +125,20 @@ const update = async (req, res) => {
         message: "User not found"
       });
     }
-    let updateData = { ...req.body};
+    let updateData = { ...req.body };
     if (req.file) {
+        if (user.user_img) {
+          const oldImgName = user.user_img.split("/uploads/")[1];
+          const oldImgPath = path.join(
+            __dirname,
+            "..",
+            "uploads",
+            oldImgName
+          );
+          if (fs.existsSync(oldImgPath)) {
+            fs.unlinkSync(oldImgPath)
+          }
+        }
       const port = process.env.PORT || 3000;
       updateData.user_img = `http://localhost:${port}/uploads/${req.file.filename}`;
     }
@@ -132,7 +146,7 @@ const update = async (req, res) => {
     await user.update(updateData);
     return res.status(200).json({
       success: true,
-      message:"Profile update successfully",
+      message: "Profile update successfully",
       data: user
     })
   } catch (error) {

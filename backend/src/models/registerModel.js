@@ -75,6 +75,7 @@ const REG_MODEL = sequelize.define(
       type: DataTypes.ENUM("Admin", "User"),
       allowNull: false
     },
+    
     user_img: {
       type: DataTypes.TEXT,
       allowNull: true
