@@ -5,7 +5,6 @@ import LoginPage from "../pages/auth/LoginPage";
 import Dashboard from "../pages/dashboard/Dashboard";
 import PublicLayout from "../layout/PublicLayout";
 import ProtectedLayout from "../layout/ProtectedLayout";
-import Home from "../pages/home/Home";
 import IncomeCreate from "../pages/income/IncomeCreate";
 import IncomeDetails from "../pages/income/IncomeDetails";
 import IncomeUpdate from "../pages/income/IncomeUpdate";
@@ -50,7 +49,7 @@ const DefaultRoute = () => {
         <Route path="profile" element={<Profile/>}/>
       </Route>
 
-      <Route path="*" element={<Navigate to={token ? "/private" : "/login"} />} />
+      <Route path="*" element={<Navigate to={token ? "/dash" : "/login"} />} />
     </Routes>
   );
 };

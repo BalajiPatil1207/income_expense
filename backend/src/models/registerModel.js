@@ -76,7 +76,7 @@ const REG_MODEL = sequelize.define(
       allowNull: false
     },
     user_img: {
-      type: DataTypes.BLOB("long"),
+      type: DataTypes.TEXT,
       allowNull: true
     },
 

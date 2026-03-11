@@ -115,16 +115,24 @@ const find = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const user = await REG_MODEL.findByPk(req.params.id);
+    const userId = req.params.id
+    const user = await REG_MODEL.findByPk(userId);
     if (!user) {
       return res.status(401).json({
         success: false,
         message: "User not found"
       });
     }
-    await user.update(req.body);
+    let updateData = { ...req.body};
+    if (req.file) {
+      const port = process.env.PORT || 3000;
+      updateData.user_img = `http://localhost:${port}/uploads/${req.file.filename}`;
+    }
+
+    await user.update(updateData);
     return res.status(200).json({
       success: true,
+      message:"Profile update successfully",
       data: user
     })
   } catch (error) {

@@ -13,6 +13,8 @@ import {
   History,
 } from "lucide-react";
 import { motion } from "framer-motion";
+console.log(motion);
+
 // Recharts for the professional graph
 import {
   AreaChart,

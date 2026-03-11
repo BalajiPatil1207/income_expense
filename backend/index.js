@@ -1,10 +1,13 @@
 const express = require('express');
 require('dotenv').config();
 const app = express();
+const path = require("path");
 const cors = require("cors");
 
 app.use(express.json());
 app.use(cors());
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
 const registerRoute = require("./src/routes/registerRoute");
@@ -17,7 +20,7 @@ app.use("/api/income",auth ,incomeRoute);
 const expenseRoute = require("./src/routes/expenseRoute");
 app.use("/api/expense", auth,expenseRoute);
 
-const port = Number(process.env.PORT);
+const port = Number(process.env.PORT) || 3000;
 
 app.listen(port,()=>{
   console.log(`Server running on http://localhost:${port}`);
