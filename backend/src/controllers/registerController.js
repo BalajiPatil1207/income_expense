@@ -117,64 +117,75 @@ const find = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const userId = req.params.id
+
+    const userId = req.params.id;
+
     const user = await REG_MODEL.findByPk(userId);
+
     if (!user) {
-      return res.status(401).json({
+      return res.status(404).json({
         success: false,
         message: "User not found"
       });
     }
+
     let updateData = { ...req.body };
-    if (req.file) {
-        if (user.user_img) {
-          const oldImgName = user.user_img.split("/uploads/")[1];
-          const oldImgPath = path.join(
-            __dirname,
-            "..",
-            "uploads",
-            oldImgName
-          );
-          if (fs.existsSync(oldImgPath)) {
-            fs.unlinkSync(oldImgPath)
-          }
+
+    // 🖼 image update
+    if (req.body.user_img) {
+
+      // delete old image
+      if (user.user_img) {
+        const oldImgPath = path.join(
+          process.cwd(),
+          "public",
+          user.user_img
+        );
+
+        if (fs.existsSync(oldImgPath)) {
+          fs.unlinkSync(oldImgPath);
         }
-      const port = process.env.PORT || 3000;
-      updateData.user_img = `http://localhost:${port}/uploads/${req.file.filename}`;
+      }
+
+      updateData.user_img = req.body.user_img;
     }
 
     await user.update(updateData);
+
     return res.status(200).json({
       success: true,
-      message: "Profile update successfully",
+      message: "Profile updated successfully",
       data: user
-    })
+    });
+
   } catch (error) {
+
     const err = errorHandler(error);
+
     return res.status(err.status || 500).json(err);
 
   }
-}
+};
 
 const Delete = async (req, res) => {
-  try {
-    const user = await REG_MODEL.findByPk(req.params.id);
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: "User not found"
-      });
-    }
-    await user.destroy();
-    return res.status(200).json({
-      success: true,
-      data: user
-    })
-  } catch (error) {
-    const err = errorHandler(error);
-    return res.status(err.status || 500).json(err);
+  // try {
+  //   const user = await REG_MODEL.findByPk(req.params.id);
+  //   if (!user) {
+  //     return res.status(401).json({
+  //       success: false,
+  //       message: "User not found"
+  //     });
+  //   }
+  //   await user.destroy();
+  //   return res.status(200).json({
+  //     success: true,
+  //     data: user
+  //   })
+  // } catch (error) {
+  //   const err = errorHandler(error);
+  //   return res.status(err.status || 500).json(err);
 
-  }
+  // }
 }
 
 module.exports = {
