@@ -26,7 +26,6 @@ const EXPENSE = sequelize.define(
         }
       }
     },
-
     amount:{
       type:DataTypes.DECIMAL,
       allowNull:false,
@@ -61,6 +60,5 @@ const EXPENSE = sequelize.define(
    timestamps:true 
   }
 );
-
 
 module.exports = EXPENSE;

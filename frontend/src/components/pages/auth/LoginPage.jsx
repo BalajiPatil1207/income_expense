@@ -3,41 +3,56 @@ import { Link, useNavigate } from "react-router-dom";
 import { api, storeData } from "../../../services/api";
 import { Mail, Lock, LogIn, ArrowRight, Loader2, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import toast from "react-hot-toast"; // 🚀 Import toast
 
 const LoginPage = () => {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const inputHandler = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
-    if (error) setError(""); // Type kartaana error घालवण्यासाठी
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+
+    // ⏳ API Call promise
+    const loginPromise = api.post("/user/login", user);
+
+    toast.promise(loginPromise, {
+      loading: 'Verifying credentials...',
+      success: (res) => {
+        if (res.data && res.data.success) {
+          const token = res.data.token;
+          const userData = res.data.data;
+          storeData(token, userData);
+          navigate("/private");
+          return `Welcome back, ${userData.first_name}! 👋`;
+        } else {
+          throw new Error(res.data.message || "Login failed");
+        }
+      },
+      error: (err) => {
+        return err.response?.data?.message || err.message || "Invalid credentials!";
+      },
+    }, {
+      success: { duration: 4000, icon: '🔐' },
+      error: { duration: 4000, icon: '🚫' },
+    });
+
     try {
-      const res = await api.post("/user/login", user);
-      if (res.data && res.data.success) {
-        const token = res.data.token;
-        const userData = res.data.data;
-        storeData(token, userData);
-        navigate("/private");
-      } else {
-        setError(res.data.message || "Login failed");
-      }
+      await loginPromise;
     } catch (error) {
-      setError(error.response?.data?.message || "Something went wrong!");
+      console.error("Login Error:", error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#0a0f1e] flex items-center justify-center p-4 overflow-hidden relative font-sans">
+    <div className="min-h-screen w-full bg-[#0a0f1e] flex items-center justify-center p-4 overflow-hidden relative font-sans text-white">
       
       {/* --- Background Animated Orbs --- */}
       <motion.div 
@@ -69,23 +84,9 @@ const LoginPage = () => {
             >
               <LogIn size={36} strokeWidth={2.5} />
             </motion.div>
-            <h1 className="text-4xl font-black text-white tracking-tighter">Welcome Back</h1>
+            <h1 className="text-4xl font-black tracking-tighter">Welcome Back</h1>
             <p className="text-slate-400 mt-2 font-medium">Elevate your financial control.</p>
           </div>
-
-          {/* Error Message */}
-          <AnimatePresence>
-            {error && (
-              <motion.div 
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 rounded-2xl text-rose-400 text-sm font-bold text-center"
-              >
-                {error}
-              </motion.div>
-            )}
-          </AnimatePresence>
 
           <form onSubmit={submitHandler} className="space-y-6">
             {/* Email Field */}
@@ -141,7 +142,7 @@ const LoginPage = () => {
                 <Loader2 className="animate-spin" size={20} />
               ) : (
                 <>
-                  <span>Enter Dashboard</span>
+                  <span className="uppercase tracking-widest text-xs">Enter Dashboard</span>
                   <ArrowRight size={20} />
                 </>
               )}

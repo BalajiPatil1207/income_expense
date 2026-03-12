@@ -42,7 +42,6 @@ const login = async (req, res) => {
         message: "Invalid credentials"
       });
     }
-    // findUser.password = undefined;
 
     const payload = {
       id: findUser.user_id,
@@ -167,33 +166,11 @@ const update = async (req, res) => {
   }
 };
 
-const Delete = async (req, res) => {
-  // try {
-  //   const user = await REG_MODEL.findByPk(req.params.id);
-  //   if (!user) {
-  //     return res.status(401).json({
-  //       success: false,
-  //       message: "User not found"
-  //     });
-  //   }
-  //   await user.destroy();
-  //   return res.status(200).json({
-  //     success: true,
-  //     data: user
-  //   })
-  // } catch (error) {
-  //   const err = errorHandler(error);
-  //   return res.status(err.status || 500).json(err);
-
-  // }
-}
-
 module.exports = {
   register,
   login,
   index,
   store,
-  Delete,
   update,
   find
 };

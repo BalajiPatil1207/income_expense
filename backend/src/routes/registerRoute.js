@@ -17,7 +17,5 @@ router.put("/update/:id",memoryUpload("users"),
      next()
  } ,registerControl.update);
 
-router.delete("/delete/:id", registerControl.Delete);
-
 
 module.exports = router;

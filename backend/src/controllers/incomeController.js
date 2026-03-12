@@ -19,8 +19,6 @@ const index = async (req, res) => {
 
 const store = async (req, res) => {
   try {
-    console.log("USER:", req.user);
-    console.log("BODY:", req.body);
     const income = await INCOME.create({ 
       ...req.body, 
       pk_user_id: req.user.id 
@@ -54,6 +52,7 @@ const find = async (req, res) => {
     res.status(err.status || 500).json(err);
   }
 }
+
 const update = async (req, res) => {
   try {
     const income = await INCOME.findByPk(req.params.id);
@@ -75,6 +74,7 @@ const update = async (req, res) => {
     res.status(err.status || 500).json(err);
   }
 }
+
 const Delete = async (req, res) => {
   try {
     const income = await INCOME.findByPk(req.params.id);

@@ -13,6 +13,8 @@ import ExpenseIndex from "../pages/expense/ExpenseIndex";
 import ExpenseCreate from "../pages/expense/ExpenseCreate";
 import ExpenseUpdate from "../pages/expense/ExpenseUpdate";
 import Profile from "../pages/home/Profile";
+import Analytics from "../pages/dashboard/Analytics";
+import Settings  from "../pages/dashboard/Settings";
 
 const DefaultRoute = () => {
   const navigate = useNavigate();
@@ -47,6 +49,8 @@ const DefaultRoute = () => {
         <Route path="expense/edit/:id" element={<ExpenseUpdate/>}/>
 
         <Route path="profile" element={<Profile/>}/>
+        <Route path="analytics" element={<Analytics/>}/>
+        <Route path="settings" element={<Settings/>}/>
       </Route>
 
       <Route path="*" element={<Navigate to={token ? "/dash" : "/login"} />} />

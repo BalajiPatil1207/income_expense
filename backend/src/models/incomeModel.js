@@ -62,13 +62,4 @@ const INCOME = sequelize.define(
   }
 );
 
-// REG_MODEL.hasMany(INCOME,{
-//   foreignKey:"user_ID",
-//   onDelete:"CASCADE"
-// });
-
-// INCOME.belongsTo(REG_MODEL,{
-//   foreignKey:"user_ID"
-// });
-
 module.exports = INCOME;

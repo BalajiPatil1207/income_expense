@@ -54,6 +54,7 @@ const find = async (req, res) => {
     res.status(err.status || 500).json(err);
   }
 }
+
 const update = async (req, res) => {
   try {
     const income = await EXPENSE.findByPk(req.params.id);
@@ -75,6 +76,7 @@ const update = async (req, res) => {
     res.status(err.status || 500).json(err);
   }
 }
+
 const Delete = async (req, res) => {
   try {
     const income = await EXPENSE.findByPk(req.params.id);

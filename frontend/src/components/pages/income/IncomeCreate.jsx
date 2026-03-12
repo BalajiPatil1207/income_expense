@@ -12,6 +12,7 @@ import {
   Zap
 } from "lucide-react";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast"; 
 
 const IncomeCreate = () => {
   const navigate = useNavigate();
@@ -28,11 +29,37 @@ const IncomeCreate = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    // ⏳ Promise for Income storage
+    const storePromise = api.post("/income/store", income);
+
+    toast.promise(storePromise, {
+      loading: 'Recording your wealth...',
+      success: (res) => {
+        if (res.data.success) {
+          navigate("/dash");
+          return `Income of ₹${income.amount} added! 💰`;
+        }
+        throw new Error("Failed to save income");
+      },
+      error: (err) => {
+        return err.response?.data?.message || "Transaction failed!";
+      },
+    }, {
+      style: {
+        borderRadius: '20px',
+        background: '#161d31',
+        color: '#fff',
+        border: '1px solid rgba(16, 185, 129, 0.2)',
+      },
+      success: {
+        duration: 3000,
+        icon: '✅',
+      },
+    });
+
     try {
-      const res = await api.post("/income/store", income);
-      if(res.data.success) {
-        navigate("/dash");
-      }
+      await storePromise;
     } catch (error) {
       console.log("Error details:", error.response?.data || error.message);
     } finally {
@@ -41,7 +68,7 @@ const IncomeCreate = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center p-4 relative overflow-hidden text-white">
       
       {/* 🎭 Background Glows */}
       <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-emerald-600/10 rounded-full blur-[100px]"></div>
@@ -68,7 +95,7 @@ const IncomeCreate = () => {
               </div>
             </div>
             
-            <h1 className="text-4xl font-black text-white tracking-tighter">
+            <h1 className="text-4xl font-black tracking-tighter">
               Add <span className="text-emerald-400">Income</span>
             </h1>
             <p className="text-slate-500 font-medium mt-1">
@@ -133,7 +160,7 @@ const IncomeCreate = () => {
                     required
                     value={income.date || ""}
                     onChange={inputHandler}
-                    className="w-full pl-14 pr-4 py-4 bg-[#0a0f1e]/50 border border-slate-800 rounded-2xl focus:border-emerald-500 focus:outline-none transition-all text-white font-bold"
+                    className="w-full pl-14 pr-4 py-4 bg-[#0a0f1e]/50 border border-slate-800 rounded-2xl focus:border-emerald-500 focus:outline-none transition-all text-white font-bold [color-scheme:dark]"
                   />
                 </div>
               </div>
@@ -149,7 +176,7 @@ const IncomeCreate = () => {
                     required
                     value={income.time || ""}
                     onChange={inputHandler}
-                    className="w-full pl-14 pr-4 py-4 bg-[#0a0f1e]/50 border border-slate-800 rounded-2xl focus:border-emerald-500 focus:outline-none transition-all text-white font-bold"
+                    className="w-full pl-14 pr-4 py-4 bg-[#0a0f1e]/50 border border-slate-800 rounded-2xl focus:border-emerald-500 focus:outline-none transition-all text-white font-bold [color-scheme:dark]"
                   />
                 </div>
               </div>
@@ -170,7 +197,7 @@ const IncomeCreate = () => {
                   </span>
                 ) : (
                   <>
-                    <span>Confirm Transaction</span>
+                    <span className="uppercase tracking-widest text-xs">Confirm Transaction</span>
                     <CheckCircle2 size={20} strokeWidth={3} />
                   </>
                 )}
